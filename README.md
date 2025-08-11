@@ -1,5 +1,7 @@
 <div align="center">
 
+# This project is a fork. Provides a more convenient way to run project in a gradio interface, coding using Python instead of Juypter notebooks. 
+
 ## CharaConsist: Fine-Grained Consistent Character Generation
 
 Official implementation of ICCV 2025 paper - CharaConsist: Fine-Grained Consistent Character Generation
