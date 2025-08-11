@@ -1,13 +1,51 @@
 <div align="center">
 
-# This project is a fork. Provides a more convenient way to run project in a gradio interface, coding using Python instead of Juypter notebooks. 
-
 ## CharaConsist: Fine-Grained Consistent Character Generation
 
 Official implementation of ICCV 2025 paper - CharaConsist: Fine-Grained Consistent Character Generation
 
 [[Paper](https://arxiv.org/abs/2507.11533)] &emsp; [[Project Page](https://murray-wang.github.io/CharaConsist/)] &emsp; <br>
 </div>
+
+## Quickstart (Gradio UI)
+
+This repository includes a Gradio app (`app.py`) that wraps the three notebooks (`gen-bg_fg`, `gen-fg_only`, `gen-mix`) into tabs and runs on top of the Diffusers FLUX.1 pipeline with optimizations (fp16, device_map="auto", CPU offload, VAE slicing; xFormers optional).
+
+### Installation
+
+We recommend creating a virtual environment, installing a CUDA-enabled PyTorch matching your driver, then the remaining requirements.
+
+```bash
+# (optional) create & activate venv
+python -m venv .venv
+# On Windows
+.venv\Scripts\activate
+
+# Install a CUDA build of PyTorch (example for CUDA 12.1 on Windows)
+pip install torch==2.3.1+cu121 torchvision==0.18.1+cu121 torchaudio==2.3.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+
+# Install project deps
+pip install -r requirements.txt
+```
+
+Notes:
+- If you prefer CPU-only for testing, install PyTorch from the CPU index-url instead.
+- xFormers is optional; the app runs without it. If you later install a matching wheel, the app will enable it automatically.
+
+### Usage
+
+```bash
+python app.py
+```
+
+In the UI:
+- Leave "Model path" empty and keep "Auto-download" checked to fetch `black-forest-labs/FLUX.1-dev` into `./flux_model` automatically.
+- If the model is gated, paste your Hugging Face token or set `HF_TOKEN`/`HUGGINGFACE_TOKEN` in your environment.
+- Choose the tab (Background+Foreground, Foreground Only, or Mix), fill prompts, and Generate.
+
+Tips:
+- Set `share=True` in `demo.launch()` inside `app.py` to get a public link.
+- For Windows, if you see symlink warnings, you can ignore them or enable Developer Mode to improve caching.
 
 ## Update
 - [x] We provide an independent implementation of the training-free mask extraction and point matching strategies in [point_and_mask](https://github.com/Murray-Wang/CharaConsist/tree/main/point_and_mask), for those who are interested in these details and need to use them separately.
@@ -36,20 +74,6 @@ Official implementation of ICCV 2025 paper - CharaConsist: Fine-Grained Consiste
 ![Story Generation.](docs/static/images/story.jpg)
 
 ## How to use
-### Dependencies and Installation
-Only requires that:
-- CUDA support
-- PyTorch >= 2.0.0
-- diffusers
-
-And this released version was tested under the environment specified in requirements.txt.
-```bash
-conda create --name characonsist python=3.9
-conda activate characonsist
-pip install -U pip
-# Install requirements
-pip install -r requirements.txt
-```
 
 ### Quick Start
 We provide two ways to use CharaConsist for generating consistent characters:
